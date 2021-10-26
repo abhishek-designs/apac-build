@@ -35,13 +35,14 @@ export default class ProductController {
    */
   static async getAllProducts(req, res) {
     try {
-      const { description_length: descriptionLength, limit, page } = req.query;
+      const { description_length: descriptionLength, page, limit } = req.query;
       const productsQuery = {
         include: "feature",
-        limit: parseInt(limit || 5),
-        offset: parseInt(limit || 5) * (parseInt(page) - 1) || 0,
+        limit: parseInt(limit || 4),
+        offset: parseInt(limit || 4) * (parseInt(page) - 1) || 0,
       };
       let products;
+      let productsLimit = parseInt(limit || 4);
       // const redisProducts = await redisClient.get("cacheKey");
       // console.log(redisProducts);
       // if (redisProducts) {
@@ -56,13 +57,17 @@ export default class ProductController {
         products = truncateDescription(products, descriptionLength);
       }
       const totalProducts = await Product.count();
+      const totalPages = Math.ceil(totalProducts / productsLimit);
+      console.log(totalPages);
       // await redisClient.set(
       //   "cacheKey",
       //   JSON.stringify({ count: totalProducts, rows: products }),
       //   "EX",
       //   10
       // );
-      return res.status(200).json({ count: totalProducts, rows: products });
+      return res
+        .status(200)
+        .json({ count: totalProducts, rows: products, totalPages });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });

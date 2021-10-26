@@ -80,7 +80,7 @@ var ProductController = function () {
      */
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$query, descriptionLength, limit, page, productsQuery, products, totalProducts;
+        var _req$query, descriptionLength, limit, page, productsQuery, products, totalProducts, totalPages;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -90,8 +90,8 @@ var ProductController = function () {
                 _req$query = req.query, descriptionLength = _req$query.description_length, limit = _req$query.limit, page = _req$query.page;
                 productsQuery = {
                   include: "feature",
-                  limit: parseInt(limit || 5),
-                  offset: parseInt(limit || 5) * (parseInt(page) - 1) || 0
+                  limit: parseInt(limit || 10),
+                  offset: parseInt(limit || 10) * (parseInt(page) - 1) || 0
                 };
                 products = void 0;
                 // const redisProducts = await redisClient.get("cacheKey");
@@ -118,21 +118,29 @@ var ProductController = function () {
 
               case 10:
                 totalProducts = _context.sent;
-                return _context.abrupt("return", res.status(200).json({ count: totalProducts, rows: products }));
+                totalPages = Math.ceil(totalProducts / limit);
+                // await redisClient.set(
+                //   "cacheKey",
+                //   JSON.stringify({ count: totalProducts, rows: products }),
+                //   "EX",
+                //   10
+                // );
 
-              case 14:
-                _context.prev = 14;
+                return _context.abrupt("return", res.status(200).json({ count: totalProducts, rows: products, totalPages: totalPages }));
+
+              case 15:
+                _context.prev = 15;
                 _context.t0 = _context["catch"](0);
 
                 console.error(_context.t0);
                 res.status(500).json({ error: "Internal Server Error" });
 
-              case 18:
+              case 19:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 14]]);
+        }, _callee, this, [[0, 15]]);
       }));
 
       function getAllProducts(_x, _x2) {
