@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bcrypt = require("bcrypt");
+var _bcryptjs = require("bcryptjs");
 
-var _bcrypt2 = _interopRequireDefault(_bcrypt);
+var _bcryptjs2 = _interopRequireDefault(_bcryptjs);
 
 var _jsonwebtoken = require("jsonwebtoken");
 
@@ -37,7 +37,7 @@ exports.default = {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _bcrypt2.default.hash(password, 10);
+              return _bcryptjs2.default.hash(password, 10);
 
             case 2:
               hash = _context.sent;
@@ -65,7 +65,7 @@ exports.default = {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return _bcrypt2.default.compare(password, userPassword);
+              return _bcryptjs2.default.compare(password, userPassword);
 
             case 2:
               match = _context2.sent;
