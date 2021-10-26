@@ -40,6 +40,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
+<<<<<<< HEAD
+router.use("/", function (req, res) {
+  return res.status(200).send("Welcome to Apac Wireless");
+});
+=======
+>>>>>>> 784a5fb2ff2e9d5c798eec4780b16a34bd908a7a
 router.use("/customers", _customer2.default);
 router.use("/customer", _customer2.default);
 router.use("/products", _products2.default);
