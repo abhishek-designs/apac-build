@@ -10,10 +10,10 @@ import fs from "fs";
 import ExcelJS from "exceljs";
 import XLSX from "xlsx";
 
-const redisClient = redis.createClient({
-  host: "apac-redis-001.nm1jeh.0001.use1.cache.amazonaws.com",
-  port: "6379",
-});
+// const redisClient = redis.createClient({
+//   host: "apac-redis-001.nm1jeh.0001.use1.cache.amazonaws.com",
+//   port: "6379",
+// });
 
 const { Product, Features } = db;
 
@@ -42,26 +42,26 @@ export default class ProductController {
         offset: parseInt(limit || 5) * (parseInt(page) - 1) || 0,
       };
       let products;
-      const redisProducts = await redisClient.get("cacheKey");
-      console.log(redisProducts);
-      if (redisProducts) {
-        products = JSON.parse(redisProducts);
-        return res
-          .status(200)
-          .json({ count: products.count, rows: products.rows });
-      }
+      // const redisProducts = await redisClient.get("cacheKey");
+      // console.log(redisProducts);
+      // if (redisProducts) {
+      //   products = JSON.parse(redisProducts);
+      //   return res
+      //     .status(200)
+      //     .json({ count: products.count, rows: products.rows });
+      // }
       products = await Product.findAll(productsQuery);
 
       if (descriptionLength) {
         products = truncateDescription(products, descriptionLength);
       }
       const totalProducts = await Product.count();
-      await redisClient.set(
-        "cacheKey",
-        JSON.stringify({ count: totalProducts, rows: products }),
-        "EX",
-        10
-      );
+      // await redisClient.set(
+      //   "cacheKey",
+      //   JSON.stringify({ count: totalProducts, rows: products }),
+      //   "EX",
+      //   10
+      // );
       return res.status(200).json({ count: totalProducts, rows: products });
     } catch (error) {
       console.error(error);
