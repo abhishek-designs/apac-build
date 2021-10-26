@@ -80,20 +80,21 @@ var ProductController = function () {
      */
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$query, descriptionLength, limit, page, productsQuery, products, totalProducts, totalPages;
+        var _req$query, descriptionLength, page, limit, productsQuery, products, productsLimit, totalProducts, totalPages;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                _req$query = req.query, descriptionLength = _req$query.description_length, limit = _req$query.limit, page = _req$query.page;
+                _req$query = req.query, descriptionLength = _req$query.description_length, page = _req$query.page, limit = _req$query.limit;
                 productsQuery = {
                   include: "feature",
-                  limit: parseInt(limit || 10),
-                  offset: parseInt(limit || 10) * (parseInt(page) - 1) || 0
+                  limit: parseInt(limit || 4),
+                  offset: parseInt(limit || 4) * (parseInt(page) - 1) || 0
                 };
                 products = void 0;
+                productsLimit = parseInt(limit || 4);
                 // const redisProducts = await redisClient.get("cacheKey");
                 // console.log(redisProducts);
                 // if (redisProducts) {
@@ -103,44 +104,45 @@ var ProductController = function () {
                 //     .json({ count: products.count, rows: products.rows });
                 // }
 
-                _context.next = 6;
+                _context.next = 7;
                 return Product.findAll(productsQuery);
 
-              case 6:
+              case 7:
                 products = _context.sent;
 
 
                 if (descriptionLength) {
                   products = truncateDescription(products, descriptionLength);
                 }
-                _context.next = 10;
+                _context.next = 11;
                 return Product.count();
 
-              case 10:
+              case 11:
                 totalProducts = _context.sent;
-                totalPages = Math.ceil(totalProducts / limit);
+                totalPages = Math.ceil(totalProducts / productsLimit);
+
+                console.log(totalPages);
                 // await redisClient.set(
                 //   "cacheKey",
                 //   JSON.stringify({ count: totalProducts, rows: products }),
                 //   "EX",
                 //   10
                 // );
-
                 return _context.abrupt("return", res.status(200).json({ count: totalProducts, rows: products, totalPages: totalPages }));
 
-              case 15:
-                _context.prev = 15;
+              case 17:
+                _context.prev = 17;
                 _context.t0 = _context["catch"](0);
 
                 console.error(_context.t0);
                 res.status(500).json({ error: "Internal Server Error" });
 
-              case 19:
+              case 21:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 15]]);
+        }, _callee, this, [[0, 17]]);
       }));
 
       function getAllProducts(_x, _x2) {
