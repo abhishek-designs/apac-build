@@ -46,7 +46,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var redisClient = _asyncRedis2.default.createClient(process.env.REDIS_URL);
+// const redisClient = redis.createClient({
+//   host: "apac-redis-001.nm1jeh.0001.use1.cache.amazonaws.com",
+//   port: "6379",
+// });
 
 var Product = _models2.default.Product,
     Features = _models2.default.Features;
@@ -77,7 +80,7 @@ var ProductController = function () {
      */
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$query, descriptionLength, limit, page, productsQuery, products, redisProducts, totalProducts;
+        var _req$query, descriptionLength, limit, page, productsQuery, products, totalProducts;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -91,57 +94,45 @@ var ProductController = function () {
                   offset: parseInt(limit || 5) * (parseInt(page) - 1) || 0
                 };
                 products = void 0;
+                // const redisProducts = await redisClient.get("cacheKey");
+                // console.log(redisProducts);
+                // if (redisProducts) {
+                //   products = JSON.parse(redisProducts);
+                //   return res
+                //     .status(200)
+                //     .json({ count: products.count, rows: products.rows });
+                // }
+
                 _context.next = 6;
-                return redisClient.get("cacheKey");
-
-              case 6:
-                redisProducts = _context.sent;
-
-                console.log(redisProducts);
-
-                if (!redisProducts) {
-                  _context.next = 11;
-                  break;
-                }
-
-                products = JSON.parse(redisProducts);
-                return _context.abrupt("return", res.status(200).json({ count: products.count, rows: products.rows }));
-
-              case 11:
-                _context.next = 13;
                 return Product.findAll(productsQuery);
 
-              case 13:
+              case 6:
                 products = _context.sent;
 
 
                 if (descriptionLength) {
                   products = truncateDescription(products, descriptionLength);
                 }
-                _context.next = 17;
+                _context.next = 10;
                 return Product.count();
 
-              case 17:
+              case 10:
                 totalProducts = _context.sent;
-                _context.next = 20;
-                return redisClient.set("cacheKey", JSON.stringify({ count: totalProducts, rows: products }), "EX", 10);
-
-              case 20:
                 return _context.abrupt("return", res.status(200).json({ count: totalProducts, rows: products }));
 
-              case 23:
-                _context.prev = 23;
+              case 14:
+                _context.prev = 14;
                 _context.t0 = _context["catch"](0);
 
                 console.error(_context.t0);
                 res.status(500).json({ error: "Internal Server Error" });
 
-              case 27:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 23]]);
+        }, _callee, this, [[0, 14]]);
       }));
 
       function getAllProducts(_x, _x2) {
