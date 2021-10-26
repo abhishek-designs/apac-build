@@ -9,7 +9,6 @@ import shippingRouter from "./routes/shipping";
 
 const router = express.Router();
 
-router.use("/", (req, res) => res.status(200).send("Welcome to Apac Wireless"));
 router.use("/customers", customerRouter);
 router.use("/customer", customerRouter);
 router.use("/products", productRouter);

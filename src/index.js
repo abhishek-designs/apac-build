@@ -32,6 +32,7 @@ const io = new Server(httpServer, {
 });
 
 app.use("/", api);
+app.get("/", (req, res) => res.status(200).send("Welcome to Apac Wireless"));
 
 // Array consisting all of the chat messages b/w admin and customer
 // const messages = [];

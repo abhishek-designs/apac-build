@@ -70,6 +70,9 @@ var io = new _socket.Server(httpServer, {
 });
 
 app.use("/", _api2.default);
+app.get("/", function (req, res) {
+  return res.status(200).send("Welcome to Apac Wireless");
+});
 
 // Array consisting all of the chat messages b/w admin and customer
 // const messages = [];
