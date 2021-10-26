@@ -10,7 +10,10 @@ import fs from "fs";
 import ExcelJS from "exceljs";
 import XLSX from "xlsx";
 
-const redisClient = redis.createClient(process.env.REDIS_URL);
+const redisClient = redis.createClient({
+  host: "apac-redis-001.nm1jeh.0001.use1.cache.amazonaws.com",
+  port: "6379",
+});
 
 const { Product, Features } = db;
 
